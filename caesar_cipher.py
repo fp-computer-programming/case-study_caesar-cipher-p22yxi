@@ -1,9 +1,12 @@
+# Yongdong XI (2022/4/28)
 # Imports
 from string import ascii_uppercase
+
 
 # Main
 user_file = input("Please enter a file to be encrypted: ")
 shift_value = input("Please enter a shift value: ")
+
 
 # Functions
 def cipher_key(shift):
@@ -12,34 +15,33 @@ def cipher_key(shift):
 
     return dict(zip(original_letters, shifted_letters))
 
-with open(user_file, 'r') as file1:
-    lines = file1.readlines()
-    for x in lines:
-        line = x
-
+key = cipher_key(shift_value)
 
 def shift_line(line, dict_key):
-    new_line = " "
-    for w in line:
-        for (k, v) in dict_key.items():
-            if k == w:
-                new_line += w
-        
-    # Add code here
+    new_line = ""
+    for x in line:
+        if x.isupper() == True:
+            new_line += dict_key[x.upper()]
+        else:
+            new_line += dict_key[x.upper()].lower()
+
     return new_line
 
 
 def encrypt_message(filename, dict_key):
-    ofile = open(filename, "w")
-    ofile.write(new_line + "\n")
-    ofile.close()
+    with open(filename,"r") as file1:
+        old_file = file1
+    new_file = open("new_file.txt","a")
 
+    while True:
+        old_line = old_file.readline()
+        new_line = shift_line(old_line, dict_key)
+        new_file.write(new_line + "\n")
+        if len(old_line) == 0:
+            break
+    
+    old_file.close()
+    new_file.close()
 
-    # Add code here
-
-
-
-
-key = cipher_key(shift_value)
 
 encrypt_message(user_file, key)
